@@ -54,7 +54,7 @@ module.exports = function (options) {
   var outputType = options.outputType || 'browser', // amd, browser, cjs
       namespace = options.namespace || 'Ember.TEMPLATES',
       templateRoot = options.templateRoot || 'templates',
-      processName = options.processName || defaultProcessName,
+      processName = options.processName || null,
       compilerOptions = options.compilerOptions || {},
       ts = new stream.Transform({objectMode: true});
 
@@ -83,7 +83,8 @@ module.exports = function (options) {
     // Look out for those pesky windows path separators
     name = name.replace(/\\/g, '/');
     // Allow the user a chance to transform the name
-    name = processName(name);
+    name = defaultProcessName(name);
+    if (processName) name = processName(name);
 
     // Perform pre-compilation
     try {
